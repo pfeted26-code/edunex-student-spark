@@ -1,53 +1,48 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Users, Clock } from "lucide-react";
+import { GraduationCap, Users, BookOpen, Award } from "lucide-react";
 
 const Classes = () => {
   const classes = [
     {
       id: 1,
-      name: "Computer Science 101",
-      code: "CS101",
-      instructor: "Dr. Sarah Johnson",
+      name: "First Year GLSI",
+      level: "Year 1",
+      program: "Software Engineering (GLSI)",
+      coordinator: "Dr. Sarah Johnson",
       students: 45,
-      schedule: "Mon, Wed, Fri - 9:00 AM",
+      totalCourses: 8,
       color: "from-primary to-primary-dark"
     },
     {
       id: 2,
-      name: "Mathematics Advanced",
-      code: "MATH201",
-      instructor: "Prof. Michael Chen",
+      name: "Second Year Network Security",
+      level: "Year 2",
+      program: "Cybersecurity & Network Security",
+      coordinator: "Prof. Michael Chen",
       students: 38,
-      schedule: "Tue, Thu - 10:30 AM",
+      totalCourses: 6,
       color: "from-secondary to-blue-600"
     },
     {
       id: 3,
-      name: "Physics Fundamentals",
-      code: "PHY101",
-      instructor: "Dr. Emily Rodriguez",
+      name: "Third Year Data Science",
+      level: "Year 3",
+      program: "Data Science & AI",
+      coordinator: "Dr. Emily Rodriguez",
       students: 42,
-      schedule: "Mon, Wed - 2:00 PM",
+      totalCourses: 7,
       color: "from-accent to-pink-600"
     },
     {
       id: 4,
-      name: "English Literature",
-      code: "ENG301",
-      instructor: "Prof. James Wilson",
+      name: "First Year Business Intelligence",
+      level: "Year 1",
+      program: "Business Intelligence",
+      coordinator: "Prof. James Wilson",
       students: 30,
-      schedule: "Tue, Thu - 1:00 PM",
+      totalCourses: 9,
       color: "from-success to-green-600"
-    },
-    {
-      id: 5,
-      name: "Data Structures",
-      code: "CS202",
-      instructor: "Dr. Lisa Anderson",
-      students: 35,
-      schedule: "Mon, Wed, Fri - 11:00 AM",
-      color: "from-purple-500 to-purple-700"
     },
   ];
 
@@ -63,7 +58,7 @@ const Classes = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {classes.map((cls, index) => (
             <Card 
               key={cls.id}
@@ -75,34 +70,40 @@ const Classes = () => {
               <div className="relative z-10">
                 <div className="flex items-start justify-between mb-4">
                   <div className={`h-12 w-12 rounded-xl bg-gradient-to-br ${cls.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                    <BookOpen className="h-6 w-6 text-white" />
+                    <GraduationCap className="h-6 w-6 text-white" />
                   </div>
-                  <Badge variant="secondary">{cls.code}</Badge>
+                  <Badge variant="secondary">{cls.level}</Badge>
                 </div>
 
                 <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
                   {cls.name}
                 </h3>
 
-                <p className="text-muted-foreground mb-4 flex items-center gap-2">
-                  <Users className="h-4 w-4" />
-                  {cls.instructor}
+                <p className="text-muted-foreground mb-4">
+                  {cls.program}
                 </p>
 
                 <div className="space-y-2 pt-4 border-t border-border">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground flex items-center gap-2">
+                      <Award className="h-4 w-4" />
+                      Coordinator
+                    </span>
+                    <span className="font-medium">{cls.coordinator}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground flex items-center gap-2">
+                      <BookOpen className="h-4 w-4" />
+                      Courses
+                    </span>
+                    <span className="font-medium">{cls.totalCourses}</span>
+                  </div>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground flex items-center gap-2">
                       <Users className="h-4 w-4" />
                       Students
                     </span>
                     <span className="font-medium">{cls.students}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground flex items-center gap-2">
-                      <Clock className="h-4 w-4" />
-                      Schedule
-                    </span>
-                    <span className="font-medium text-xs">{cls.schedule}</span>
                   </div>
                 </div>
               </div>

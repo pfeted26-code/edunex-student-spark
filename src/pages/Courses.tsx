@@ -1,14 +1,15 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { FileText, Clock, CheckCircle2 } from "lucide-react";
+import { FileText, CheckCircle2, BookOpen } from "lucide-react";
 
 const Courses = () => {
   const courses = [
     {
       id: 1,
-      title: "Introduction to Programming",
-      code: "CS101",
+      title: "Advanced JavaScript",
+      code: "CS301",
+      className: "First Year GLSI",
       progress: 85,
       status: "In Progress",
       modules: 12,
@@ -17,53 +18,58 @@ const Courses = () => {
     },
     {
       id: 2,
-      title: "Advanced Calculus",
-      code: "MATH301",
-      progress: 60,
+      title: "Web Development Fundamentals",
+      code: "CS101",
+      className: "First Year GLSI",
+      progress: 90,
       status: "In Progress",
-      modules: 15,
-      completed: 9,
-      color: "from-secondary to-blue-600"
+      modules: 8,
+      completed: 7,
+      color: "from-primary to-primary-dark"
     },
     {
       id: 3,
-      title: "Quantum Physics",
-      code: "PHY401",
-      progress: 100,
-      status: "Completed",
+      title: "Network Security Fundamentals",
+      code: "SEC201",
+      className: "Second Year Network Security",
+      progress: 60,
+      status: "In Progress",
       modules: 10,
-      completed: 10,
-      color: "from-success to-green-600"
+      completed: 6,
+      color: "from-secondary to-blue-600"
     },
     {
       id: 4,
-      title: "World Literature",
-      code: "ENG201",
-      progress: 45,
+      title: "Cryptography & Encryption",
+      code: "SEC202",
+      className: "Second Year Network Security",
+      progress: 55,
       status: "In Progress",
-      modules: 20,
-      completed: 9,
-      color: "from-accent to-pink-600"
+      modules: 9,
+      completed: 5,
+      color: "from-secondary to-blue-600"
     },
     {
       id: 5,
-      title: "Data Science Basics",
-      code: "DS101",
-      progress: 30,
+      title: "Machine Learning Basics",
+      code: "DS301",
+      className: "Third Year Data Science",
+      progress: 45,
       status: "In Progress",
-      modules: 18,
-      completed: 5,
-      color: "from-purple-500 to-purple-700"
+      modules: 15,
+      completed: 7,
+      color: "from-accent to-pink-600"
     },
     {
       id: 6,
-      title: "Web Development",
-      code: "CS305",
-      progress: 70,
-      status: "In Progress",
-      modules: 14,
-      completed: 10,
-      color: "from-warning to-orange-600"
+      title: "Data Analytics with Python",
+      code: "DS201",
+      className: "Third Year Data Science",
+      progress: 100,
+      status: "Completed",
+      modules: 12,
+      completed: 12,
+      color: "from-accent to-pink-600"
     },
   ];
 
@@ -105,7 +111,11 @@ const Courses = () => {
                 <h3 className="text-xl font-bold mb-1 group-hover:text-primary transition-colors">
                   {course.title}
                 </h3>
-                <p className="text-muted-foreground mb-4">{course.code}</p>
+                <p className="text-sm text-muted-foreground mb-1">{course.code}</p>
+                <div className="flex items-center gap-2 mb-4">
+                  <BookOpen className="h-3 w-3 text-muted-foreground" />
+                  <p className="text-xs text-muted-foreground">{course.className}</p>
+                </div>
 
                 <div className="space-y-4">
                   <div>
