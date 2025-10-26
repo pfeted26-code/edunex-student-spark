@@ -16,19 +16,11 @@ import {
 const Dashboard = () => {
   const dashboardCards = [
     {
-      title: "My Classes",
-      description: "View your enrolled classes",
-      icon: BookOpen,
-      link: "/classes",
-      color: "from-primary to-primary-dark",
-      count: "5 Active"
-    },
-    {
       title: "My Courses",
       description: "Access your course materials",
-      icon: FileText,
+      icon: BookOpen,
       link: "/courses",
-      color: "from-secondary to-blue-600",
+      color: "from-primary to-primary-dark",
       count: "12 Courses"
     },
     {
@@ -121,8 +113,7 @@ const Dashboard = () => {
         </div>
 
         {/* Main Dashboard Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {dashboardCards.map((card, index) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{dashboardCards.map((card, index) => {
             const Icon = card.icon;
             return (
               <Link 
