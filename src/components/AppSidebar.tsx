@@ -43,16 +43,16 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon" className="border-r transition-all duration-300 ease-in-out">
-      <SidebarHeader className="border-b border-border/50 bg-gradient-to-br from-sidebar to-sidebar/80 transition-all duration-300">
-        <Link to="/" className={`flex items-center gap-3 group overflow-hidden ${isCollapsed ? 'px-3 py-5 justify-center' : 'px-4 py-6'}`}>
-          <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary via-primary to-secondary flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
-            <span className="text-lg font-bold text-white">E</span>
+      <SidebarHeader className="h-16 border-b border-border/50 bg-gradient-to-br from-sidebar to-sidebar/80 transition-all duration-300 flex items-center">
+        <Link to="/" className={`flex items-center gap-3 group overflow-hidden w-full ${isCollapsed ? 'px-3 justify-center' : 'px-4'}`}>
+          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-primary via-primary to-secondary flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+            <span className="text-base font-bold text-white">E</span>
           </div>
           <div className={`flex flex-col transition-all duration-300 ${isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100 w-auto'}`}>
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent whitespace-nowrap">
+            <span className="text-base font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent whitespace-nowrap">
               EduNex
             </span>
-            <span className="text-xs text-muted-foreground whitespace-nowrap">Student Portal</span>
+            <span className="text-[10px] text-muted-foreground whitespace-nowrap">Student Portal</span>
           </div>
         </Link>
       </SidebarHeader>
