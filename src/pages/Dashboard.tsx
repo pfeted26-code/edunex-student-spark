@@ -34,7 +34,7 @@ const Dashboard = () => {
     {
       title: "Exams & Notes",
       description: "View grades and exams",
-      icon: Award,
+      icon: FileText,
       link: "/exams",
       color: "from-success to-green-600",
       count: "3 Upcoming"
