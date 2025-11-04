@@ -1,7 +1,24 @@
 import { Card } from "@/components/ui/card";
-import { MapPin } from "lucide-react";
+import { MapPin, Clock, User, BookOpen, CalendarDays, X } from "lucide-react";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 const Timetable = () => {
+  const [selectedCourse, setSelectedCourse] = useState<{
+    course: string;
+    room: string;
+    time: string;
+    day: string;
+  } | null>(null);
+
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const timeSlots = [
     "08:00",
@@ -51,6 +68,53 @@ const Timetable = () => {
       "English Literature": "from-pink-500/20 to-pink-600/20 border-pink-500/30",
     };
     return colorMap[course] || "from-gray-500/20 to-gray-600/20 border-gray-500/30";
+  };
+
+  const getCourseDetails = (courseName: string) => {
+    const details: Record<string, any> = {
+      "Computer Science 101": {
+        instructor: "Dr. Sarah Johnson",
+        credits: 3,
+        description: "Introduction to fundamental concepts of computer science including algorithms, data types, and programming paradigms.",
+        semester: "Fall 2024",
+        topics: ["Programming Basics", "Algorithms", "Data Types", "Problem Solving"],
+      },
+      "Data Structures": {
+        instructor: "Prof. Michael Chen",
+        credits: 4,
+        description: "Advanced study of data organization, manipulation, and algorithm design including arrays, linked lists, trees, and graphs.",
+        semester: "Fall 2024",
+        topics: ["Arrays & Lists", "Trees & Graphs", "Hash Tables", "Algorithm Analysis"],
+      },
+      "Physics Fundamentals": {
+        instructor: "Dr. Emily Rodriguez",
+        credits: 3,
+        description: "Core principles of physics including mechanics, thermodynamics, and electromagnetism with practical applications.",
+        semester: "Fall 2024",
+        topics: ["Mechanics", "Thermodynamics", "Waves", "Electromagnetism"],
+      },
+      "Mathematics Advanced": {
+        instructor: "Prof. David Kim",
+        credits: 4,
+        description: "Advanced mathematical concepts including calculus, linear algebra, and differential equations.",
+        semester: "Fall 2024",
+        topics: ["Calculus III", "Linear Algebra", "Differential Equations", "Probability"],
+      },
+      "English Literature": {
+        instructor: "Dr. Amanda Williams",
+        credits: 3,
+        description: "Exploration of classical and contemporary literature with emphasis on critical analysis and interpretation.",
+        semester: "Fall 2024",
+        topics: ["Poetry Analysis", "Fiction Studies", "Drama", "Critical Theory"],
+      },
+    };
+    return details[courseName] || {
+      instructor: "TBA",
+      credits: 3,
+      description: "Course details coming soon.",
+      semester: "Fall 2024",
+      topics: [],
+    };
   };
 
   return (
@@ -103,6 +167,12 @@ const Timetable = () => {
                         >
                           {classData && (
                             <div 
+                              onClick={() => setSelectedCourse({
+                                course: classData.course,
+                                room: classData.room,
+                                time: time,
+                                day: day
+                              })}
                               className={`h-full p-3 rounded-lg bg-gradient-to-br ${getCellClass(classData.course)} border-2 hover:shadow-md transition-all duration-200 hover:scale-[1.02] cursor-pointer`}
                               style={{ minHeight: `${classData.duration * 60}px` }}
                             >
@@ -124,6 +194,91 @@ const Timetable = () => {
             </table>
           </div>
         </Card>
+
+        <Dialog open={!!selectedCourse} onOpenChange={() => setSelectedCourse(null)}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                {selectedCourse?.course}
+              </DialogTitle>
+              <DialogDescription>
+                Complete course information and details
+              </DialogDescription>
+            </DialogHeader>
+
+            {selectedCourse && (
+              <div className="space-y-6">
+                {/* Schedule Info */}
+                <div className="flex flex-wrap gap-3">
+                  <Badge variant="secondary" className="flex items-center gap-2 px-3 py-1.5">
+                    <CalendarDays className="h-4 w-4" />
+                    {selectedCourse.day}
+                  </Badge>
+                  <Badge variant="secondary" className="flex items-center gap-2 px-3 py-1.5">
+                    <Clock className="h-4 w-4" />
+                    {selectedCourse.time}
+                  </Badge>
+                  <Badge variant="secondary" className="flex items-center gap-2 px-3 py-1.5">
+                    <MapPin className="h-4 w-4" />
+                    {selectedCourse.room}
+                  </Badge>
+                </div>
+
+                {/* Course Details */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
+                    <User className="h-5 w-5 text-primary" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">Instructor</p>
+                      <p className="font-semibold">{getCourseDetails(selectedCourse.course).instructor}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
+                    <BookOpen className="h-5 w-5 text-primary" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">Credits</p>
+                      <p className="font-semibold">{getCourseDetails(selectedCourse.course).credits} Credits</p>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-lg bg-muted/50">
+                    <h4 className="font-semibold mb-2">Course Description</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {getCourseDetails(selectedCourse.course).description}
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-lg bg-muted/50">
+                    <h4 className="font-semibold mb-3">Topics Covered</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {getCourseDetails(selectedCourse.course).topics.map((topic: string, index: number) => (
+                        <Badge key={index} variant="outline" className="bg-background">
+                          {topic}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20">
+                    <p className="text-sm">
+                      <span className="font-semibold">Semester:</span> {getCourseDetails(selectedCourse.course).semester}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <Button className="flex-1" variant="default">
+                    View Course Materials
+                  </Button>
+                  <Button className="flex-1" variant="outline">
+                    Contact Instructor
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
