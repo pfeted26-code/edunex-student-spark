@@ -1,9 +1,22 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Send, Clock, CheckCircle2, XCircle, Plus } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CheckCircle2, XCircle, Clock, Calendar, Eye, X, Send, Plus } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Requests = () => {
+  const [showNewRequest, setShowNewRequest] = useState(false);
+  const [requestType, setRequestType] = useState("");
+  const [subject, setSubject] = useState("");
+  const [description, setDescription] = useState("");
+  const { toast } = useToast();
+
   const requests = [
     {
       id: 1,
@@ -69,6 +82,27 @@ const Requests = () => {
     }
   };
 
+  const handleSubmitRequest = () => {
+    if (!requestType || !subject || !description) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all fields before submitting.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    toast({
+      title: "Request Submitted",
+      description: "Your request has been submitted successfully and is pending review.",
+    });
+
+    setShowNewRequest(false);
+    setRequestType("");
+    setSubject("");
+    setDescription("");
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
@@ -81,7 +115,10 @@ const Requests = () => {
               Manage your academic and administrative requests
             </p>
           </div>
-          <Button className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity">
+          <Button 
+            className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity"
+            onClick={() => setShowNewRequest(true)}
+          >
             <Plus className="h-4 w-4 mr-2" />
             New Request
           </Button>
@@ -166,6 +203,89 @@ const Requests = () => {
             </Card>
           ))}
         </div>
+
+        {/* New Request Dialog */}
+        <Dialog open={showNewRequest} onOpenChange={setShowNewRequest}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-bold flex items-center justify-between">
+                <span>Submit New Request</span>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => setShowNewRequest(false)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </DialogTitle>
+            </DialogHeader>
+
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="request-type">Request Type *</Label>
+                <Select value={requestType} onValueChange={setRequestType}>
+                  <SelectTrigger id="request-type">
+                    <SelectValue placeholder="Select request type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="grade-review">Grade Review</SelectItem>
+                    <SelectItem value="leave-absence">Leave of Absence</SelectItem>
+                    <SelectItem value="course-substitution">Course Substitution</SelectItem>
+                    <SelectItem value="exam-reschedule">Exam Reschedule</SelectItem>
+                    <SelectItem value="transcript">Official Transcript</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="subject">Subject *</Label>
+                <Input
+                  id="subject"
+                  placeholder="Brief summary of your request"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="description">Description *</Label>
+                <Textarea
+                  id="description"
+                  placeholder="Provide detailed information about your request..."
+                  className="min-h-[150px]"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </div>
+
+              <div className="p-4 bg-muted/50 rounded-lg">
+                <p className="text-sm text-muted-foreground">
+                  <strong>Note:</strong> Your request will be reviewed by the relevant department. 
+                  You will receive a notification once your request has been processed. 
+                  Processing typically takes 3-5 business days.
+                </p>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button 
+                  className="flex-1 bg-gradient-to-r from-primary to-secondary"
+                  onClick={handleSubmitRequest}
+                >
+                  <Send className="h-4 w-4 mr-2" />
+                  Submit Request
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={() => setShowNewRequest(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

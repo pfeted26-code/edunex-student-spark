@@ -1,9 +1,22 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Clock, User, Send } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { MessageSquare, Clock, User, Send, X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Messages = () => {
+  const [showCompose, setShowCompose] = useState(false);
+  const [recipient, setRecipient] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const { toast } = useToast();
+
   const messages = [
     {
       id: 1,
@@ -57,6 +70,27 @@ const Messages = () => {
     },
   ];
 
+  const handleSendMessage = () => {
+    if (!recipient || !subject || !message) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all fields before sending.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    toast({
+      title: "Message Sent",
+      description: `Your message has been sent to ${recipient}.`,
+    });
+
+    setShowCompose(false);
+    setRecipient("");
+    setSubject("");
+    setMessage("");
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
@@ -69,7 +103,10 @@ const Messages = () => {
               Stay connected with your instructors and peers
             </p>
           </div>
-          <Button className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity">
+          <Button 
+            className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-opacity"
+            onClick={() => setShowCompose(true)}
+          >
             <Send className="h-4 w-4 mr-2" />
             Compose
           </Button>
@@ -160,6 +197,91 @@ const Messages = () => {
             </Card>
           ))}
         </div>
+
+        {/* Compose Message Dialog */}
+        <Dialog open={showCompose} onOpenChange={setShowCompose}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-bold flex items-center justify-between">
+                <span>Compose New Message</span>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => setShowCompose(false)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </DialogTitle>
+            </DialogHeader>
+
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="recipient">To *</Label>
+                <Select value={recipient} onValueChange={setRecipient}>
+                  <SelectTrigger id="recipient">
+                    <SelectValue placeholder="Select recipient" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="dr-sarah">Dr. Sarah Johnson (CS101)</SelectItem>
+                    <SelectItem value="prof-michael">Prof. Michael Chen (MATH201)</SelectItem>
+                    <SelectItem value="dr-emily">Dr. Emily Rodriguez (PHY101)</SelectItem>
+                    <SelectItem value="dr-james">Dr. James Wilson (Network Security)</SelectItem>
+                    <SelectItem value="dr-amanda">Dr. Amanda Lee (Cryptography)</SelectItem>
+                    <SelectItem value="dr-robert">Dr. Robert Taylor (Machine Learning)</SelectItem>
+                    <SelectItem value="prof-lisa">Prof. Lisa Anderson (Data Analytics)</SelectItem>
+                    <SelectItem value="admin">Admin Office</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="subject">Subject *</Label>
+                <Input
+                  id="subject"
+                  placeholder="Message subject"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="message">Message *</Label>
+                <Textarea
+                  id="message"
+                  placeholder="Type your message here..."
+                  className="min-h-[200px]"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                />
+              </div>
+
+              <div className="p-4 bg-muted/50 rounded-lg">
+                <p className="text-sm text-muted-foreground">
+                  <strong>Tip:</strong> Be clear and concise in your message. 
+                  Include relevant course codes or reference numbers if applicable.
+                  You should receive a response within 24-48 hours.
+                </p>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button 
+                  className="flex-1 bg-gradient-to-r from-primary to-secondary"
+                  onClick={handleSendMessage}
+                >
+                  <Send className="h-4 w-4 mr-2" />
+                  Send Message
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={() => setShowCompose(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
