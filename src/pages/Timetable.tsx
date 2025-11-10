@@ -36,79 +36,94 @@ const Timetable = () => {
   // Schedule organized by day and time slot
   const schedule: Record<string, Record<string, { course: string; room: string; duration: number } | null>> = {
     Monday: {
-      "09:00": { course: "Computer Science 101", room: "Room 301", duration: 2 },
-      "11:00": { course: "Data Structures", room: "Lab 202", duration: 2 },
-      "14:00": { course: "Physics Fundamentals", room: "Room 405", duration: 2 },
+      "09:00": { course: "Advanced JavaScript", room: "Room 301", duration: 2 },
+      "11:00": { course: "Network Security Fundamentals", room: "Lab 202", duration: 2 },
+      "14:00": { course: "Machine Learning Basics", room: "Room 405", duration: 2 },
     },
     Tuesday: {
-      "10:00": { course: "Mathematics Advanced", room: "Room 210", duration: 2 },
-      "13:00": { course: "English Literature", room: "Room 115", duration: 2 },
+      "10:00": { course: "Web Development Fundamentals", room: "Room 210", duration: 2 },
+      "13:00": { course: "Cryptography & Encryption", room: "Room 115", duration: 2 },
     },
     Wednesday: {
-      "09:00": { course: "Computer Science 101", room: "Room 301", duration: 2 },
-      "11:00": { course: "Data Structures", room: "Lab 202", duration: 2 },
-      "14:00": { course: "Physics Fundamentals", room: "Room 405", duration: 2 },
+      "09:00": { course: "Advanced JavaScript", room: "Room 301", duration: 2 },
+      "11:00": { course: "Data Analytics with Python", room: "Lab 202", duration: 2 },
+      "14:00": { course: "Machine Learning Basics", room: "Room 405", duration: 2 },
     },
     Thursday: {
-      "10:00": { course: "Mathematics Advanced", room: "Room 210", duration: 2 },
-      "13:00": { course: "English Literature", room: "Room 115", duration: 2 },
+      "10:00": { course: "Web Development Fundamentals", room: "Room 210", duration: 2 },
+      "13:00": { course: "Network Security Fundamentals", room: "Room 115", duration: 2 },
     },
     Friday: {
-      "09:00": { course: "Computer Science 101", room: "Room 301", duration: 2 },
-      "11:00": { course: "Data Structures", room: "Lab 202", duration: 2 },
+      "09:00": { course: "Advanced JavaScript", room: "Room 301", duration: 2 },
+      "11:00": { course: "Cryptography & Encryption", room: "Lab 202", duration: 2 },
     },
   };
 
   const getCellClass = (course: string) => {
     const colorMap: Record<string, string> = {
-      "Computer Science 101": "from-blue-500/20 to-blue-600/20 border-blue-500/30",
-      "Data Structures": "from-purple-500/20 to-purple-600/20 border-purple-500/30",
-      "Physics Fundamentals": "from-green-500/20 to-green-600/20 border-green-500/30",
-      "Mathematics Advanced": "from-orange-500/20 to-orange-600/20 border-orange-500/30",
-      "English Literature": "from-pink-500/20 to-pink-600/20 border-pink-500/30",
+      "Advanced JavaScript": "from-primary/20 to-primary/30 border-primary/40",
+      "Web Development Fundamentals": "from-primary/20 to-primary/30 border-primary/40",
+      "Network Security Fundamentals": "from-blue-500/20 to-blue-600/20 border-blue-500/30",
+      "Cryptography & Encryption": "from-blue-500/20 to-blue-600/20 border-blue-500/30",
+      "Machine Learning Basics": "from-pink-500/20 to-pink-600/20 border-pink-500/30",
+      "Data Analytics with Python": "from-pink-500/20 to-pink-600/20 border-pink-500/30",
     };
     return colorMap[course] || "from-gray-500/20 to-gray-600/20 border-gray-500/30";
   };
 
   const getCourseDetails = (courseName: string) => {
     const details: Record<string, any> = {
-      "Computer Science 101": {
+      "Advanced JavaScript": {
+        code: "CS301",
         instructor: "Dr. Sarah Johnson",
         credits: 3,
-        description: "Introduction to fundamental concepts of computer science including algorithms, data types, and programming paradigms.",
+        description: "Master advanced JavaScript concepts including ES6+, async programming, and modern frameworks for building dynamic web applications.",
         semester: "Fall 2024",
-        topics: ["Programming Basics", "Algorithms", "Data Types", "Problem Solving"],
+        topics: ["ES6+ Features", "Async/Await", "Closures", "Promises", "Modern Frameworks"],
       },
-      "Data Structures": {
+      "Web Development Fundamentals": {
+        code: "CS101",
         instructor: "Prof. Michael Chen",
         credits: 4,
-        description: "Advanced study of data organization, manipulation, and algorithm design including arrays, linked lists, trees, and graphs.",
+        description: "Introduction to web development covering HTML, CSS, JavaScript, and responsive design principles.",
         semester: "Fall 2024",
-        topics: ["Arrays & Lists", "Trees & Graphs", "Hash Tables", "Algorithm Analysis"],
+        topics: ["HTML5", "CSS3", "JavaScript Basics", "Responsive Design", "Web APIs"],
       },
-      "Physics Fundamentals": {
+      "Network Security Fundamentals": {
+        code: "SEC201",
         instructor: "Dr. Emily Rodriguez",
         credits: 3,
-        description: "Core principles of physics including mechanics, thermodynamics, and electromagnetism with practical applications.",
+        description: "Core principles of network security including firewalls, VPNs, intrusion detection, and security protocols.",
         semester: "Fall 2024",
-        topics: ["Mechanics", "Thermodynamics", "Waves", "Electromagnetism"],
+        topics: ["Firewalls", "VPN Configuration", "IDS/IPS", "Network Protocols", "Security Best Practices"],
       },
-      "Mathematics Advanced": {
+      "Cryptography & Encryption": {
+        code: "SEC202",
         instructor: "Prof. David Kim",
         credits: 4,
-        description: "Advanced mathematical concepts including calculus, linear algebra, and differential equations.",
+        description: "Study of cryptographic algorithms, encryption techniques, and their applications in securing digital communications.",
         semester: "Fall 2024",
-        topics: ["Calculus III", "Linear Algebra", "Differential Equations", "Probability"],
+        topics: ["Symmetric Encryption", "Public Key Cryptography", "Digital Signatures", "Hash Functions", "SSL/TLS"],
       },
-      "English Literature": {
+      "Machine Learning Basics": {
+        code: "DS301",
         instructor: "Dr. Amanda Williams",
         credits: 3,
-        description: "Exploration of classical and contemporary literature with emphasis on critical analysis and interpretation.",
+        description: "Introduction to machine learning algorithms, supervised and unsupervised learning, and practical ML applications.",
         semester: "Fall 2024",
-        topics: ["Poetry Analysis", "Fiction Studies", "Drama", "Critical Theory"],
+        topics: ["Supervised Learning", "Neural Networks", "Classification", "Regression", "Model Evaluation"],
+      },
+      "Data Analytics with Python": {
+        code: "DS201",
+        instructor: "Prof. Robert Lee",
+        credits: 4,
+        description: "Learn data analysis using Python, pandas, NumPy, and visualization libraries for extracting insights from data.",
+        semester: "Fall 2024",
+        topics: ["Pandas", "NumPy", "Data Visualization", "Statistical Analysis", "Data Cleaning"],
       },
     };
     return details[courseName] || {
+      code: "TBA",
       instructor: "TBA",
       credits: 3,
       description: "Course details coming soon.",
