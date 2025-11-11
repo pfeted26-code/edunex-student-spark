@@ -201,18 +201,10 @@ const Courses = () => {
                     <BookOpen className="h-4 w-4" />
                     {selectedCourse.code}
                   </Badge>
-                </div>
-
-                {/* Progress Section */}
-                <div className="p-4 rounded-lg bg-muted/50">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium">Course Progress</span>
-                    <span className="text-sm font-bold">{selectedCourse.progress}%</span>
-                  </div>
-                  <Progress value={selectedCourse.progress} className="h-3" />
-                  <p className="text-sm text-muted-foreground mt-2">
-                    {selectedCourse.completed} of {selectedCourse.modules} modules completed
-                  </p>
+                  <Badge variant="secondary" className="flex items-center gap-2 px-3 py-1.5">
+                    <FileText className="h-4 w-4" />
+                    {selectedCourse.completed}/{selectedCourse.modules} modules
+                  </Badge>
                 </div>
 
                 {/* Course Details */}
