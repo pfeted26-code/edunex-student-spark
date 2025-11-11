@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { FileText, CheckCircle2, BookOpen, Clock, User, CalendarDays, X } from "lucide-react";
+import { FileText, CheckCircle2, BookOpen, User } from "lucide-react";
 
 const Courses = () => {
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
@@ -181,109 +181,89 @@ const Courses = () => {
         <Dialog open={!!selectedCourse} onOpenChange={() => setSelectedCourse(null)}>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold flex items-center justify-between">
-                <span>{selectedCourse?.title}</span>
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  onClick={() => setSelectedCourse(null)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
+              <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                {selectedCourse?.title}
               </DialogTitle>
             </DialogHeader>
 
             {selectedCourse && (
               <div className="space-y-6">
-                {/* Course Header Info */}
-                <div className="flex items-center gap-4 p-4 bg-muted/50 rounded-lg">
-                  <div className={`h-16 w-16 rounded-xl bg-gradient-to-br ${selectedCourse.color} flex items-center justify-center`}>
-                    <FileText className="h-8 w-8 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm text-muted-foreground">{selectedCourse.code}</p>
-                    <h3 className="text-lg font-semibold">{selectedCourse.className}</h3>
-                  </div>
+                {/* Course Status */}
+                <div className="flex flex-wrap gap-3">
                   <Badge 
                     variant={selectedCourse.status === "Completed" ? "default" : "secondary"}
-                    className={selectedCourse.status === "Completed" ? "bg-success text-success-foreground" : ""}
+                    className={`flex items-center gap-2 px-3 py-1.5 ${selectedCourse.status === "Completed" ? "bg-success text-success-foreground" : ""}`}
                   >
-                    {selectedCourse.status === "Completed" && <CheckCircle2 className="h-3 w-3 mr-1" />}
+                    {selectedCourse.status === "Completed" && <CheckCircle2 className="h-4 w-4" />}
                     {selectedCourse.status}
+                  </Badge>
+                  <Badge variant="secondary" className="flex items-center gap-2 px-3 py-1.5">
+                    <BookOpen className="h-4 w-4" />
+                    {selectedCourse.code}
                   </Badge>
                 </div>
 
                 {/* Progress Section */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
+                <div className="p-4 rounded-lg bg-muted/50">
+                  <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-medium">Course Progress</span>
                     <span className="text-sm font-bold">{selectedCourse.progress}%</span>
                   </div>
                   <Progress value={selectedCourse.progress} className="h-3" />
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground mt-2">
                     {selectedCourse.completed} of {selectedCourse.modules} modules completed
                   </p>
                 </div>
 
-                {/* Course Info Grid */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                {/* Course Details */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
                     <User className="h-5 w-5 text-primary" />
                     <div>
-                      <p className="text-xs text-muted-foreground">Instructor</p>
-                      <p className="font-medium">{selectedCourse.instructor}</p>
+                      <p className="text-sm text-muted-foreground">Instructor</p>
+                      <p className="font-semibold">{selectedCourse.instructor}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                    <BookOpen className="h-5 w-5 text-secondary" />
+
+                  <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
+                    <BookOpen className="h-5 w-5 text-primary" />
                     <div>
-                      <p className="text-xs text-muted-foreground">Credits</p>
-                      <p className="font-medium">{selectedCourse.credits} Credits</p>
+                      <p className="text-sm text-muted-foreground">Credits</p>
+                      <p className="font-semibold">{selectedCourse.credits} Credits</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                    <CalendarDays className="h-5 w-5 text-accent" />
-                    <div>
-                      <p className="text-xs text-muted-foreground">Semester</p>
-                      <p className="font-medium">{selectedCourse.semester}</p>
+
+                  <div className="p-4 rounded-lg bg-muted/50">
+                    <h4 className="font-semibold mb-2">Course Description</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {selectedCourse.description}
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-lg bg-muted/50">
+                    <h4 className="font-semibold mb-3">Topics Covered</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedCourse.topics.map((topic: string, index: number) => (
+                        <Badge key={index} variant="outline" className="bg-background">
+                          {topic}
+                        </Badge>
+                      ))}
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                    <FileText className="h-5 w-5 text-success" />
-                    <div>
-                      <p className="text-xs text-muted-foreground">Modules</p>
-                      <p className="font-medium">{selectedCourse.modules} Total</p>
-                    </div>
+
+                  <div className="p-4 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20">
+                    <p className="text-sm">
+                      <span className="font-semibold">Semester:</span> {selectedCourse.semester}
+                    </p>
                   </div>
                 </div>
 
-                {/* Description */}
-                <div className="space-y-2">
-                  <h4 className="font-semibold">Course Description</h4>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {selectedCourse.description}
-                  </p>
-                </div>
-
-                {/* Topics Covered */}
-                <div className="space-y-3">
-                  <h4 className="font-semibold">Topics Covered</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedCourse.topics.map((topic: string, index: number) => (
-                      <Badge key={index} variant="secondary">
-                        {topic}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex gap-3 pt-4 border-t">
-                  <Button className="flex-1 bg-gradient-to-r from-primary to-secondary">
-                    Continue Learning
+                <div className="flex gap-3">
+                  <Button className="flex-1" variant="default">
+                    View Course Materials
                   </Button>
-                  <Button variant="outline" className="flex-1">
-                    View Materials
+                  <Button className="flex-1" variant="outline">
+                    Contact Instructor
                   </Button>
                 </div>
               </div>
