@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { FileText, CheckCircle2, BookOpen, User } from "lucide-react";
 
 const Courses = () => {
-  const [selectedCourse, setSelectedCourse] = useState<any>(null);
+  const [selectedCourse, setSelectedCourse] = useState(null);
 
   const courses = [
     {
@@ -235,7 +235,7 @@ const Courses = () => {
                   <div className="p-4 rounded-lg bg-muted/50">
                     <h4 className="font-semibold mb-3">Topics Covered</h4>
                     <div className="flex flex-wrap gap-2">
-                      {selectedCourse.topics.map((topic: string, index: number) => (
+                      {selectedCourse.topics.map((topic, index) => (
                         <Badge key={index} variant="outline" className="bg-background">
                           {topic}
                         </Badge>

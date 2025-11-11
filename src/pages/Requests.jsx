@@ -60,7 +60,7 @@ const Requests = () => {
     },
   ];
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status) => {
     switch (status) {
       case "Approved":
         return <CheckCircle2 className="h-4 w-4" />;
@@ -71,7 +71,7 @@ const Requests = () => {
     }
   };
 
-  const getStatusVariant = (status: string) => {
+  const getStatusVariant = (status) => {
     switch (status) {
       case "Approved":
         return "default";
@@ -124,7 +124,6 @@ const Requests = () => {
           </Button>
         </div>
 
-        {/* Request Statistics */}
         <div className="grid grid-cols-3 gap-4 mb-8 animate-fade-in-up">
           <Card className="p-6 border-none bg-gradient-to-br from-card to-muted/30">
             <div className="text-3xl font-bold text-primary mb-1">
@@ -146,7 +145,6 @@ const Requests = () => {
           </Card>
         </div>
 
-        {/* Requests List */}
         <div className="space-y-4">
           {requests.map((request, index) => (
             <Card 
@@ -204,20 +202,10 @@ const Requests = () => {
           ))}
         </div>
 
-        {/* New Request Dialog */}
         <Dialog open={showNewRequest} onOpenChange={setShowNewRequest}>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold flex items-center justify-between">
-                <span>Submit New Request</span>
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  onClick={() => setShowNewRequest(false)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </DialogTitle>
+              <DialogTitle className="text-2xl font-bold">Submit New Request</DialogTitle>
             </DialogHeader>
 
             <div className="space-y-6">
@@ -257,14 +245,6 @@ const Requests = () => {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
-              </div>
-
-              <div className="p-4 bg-muted/50 rounded-lg">
-                <p className="text-sm text-muted-foreground">
-                  <strong>Note:</strong> Your request will be reviewed by the relevant department. 
-                  You will receive a notification once your request has been processed. 
-                  Processing typically takes 3-5 business days.
-                </p>
               </div>
 
               <div className="flex gap-3 pt-4">

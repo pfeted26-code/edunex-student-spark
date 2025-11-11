@@ -12,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const Messages = () => {
   const [showCompose, setShowCompose] = useState(false);
-  const [selectedConversation, setSelectedConversation] = useState<number | null>(1);
+  const [selectedConversation, setSelectedConversation] = useState(1);
   const [recipient, setRecipient] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
@@ -73,8 +73,8 @@ const Messages = () => {
     },
   ];
 
-  const getConversationMessages = (conversationId: number) => {
-    const messageThreads: Record<number, Array<{ id: number; sender: string; content: string; time: string; isOwn: boolean }>> = {
+  const getConversationMessages = (conversationId) => {
+    const messageThreads = {
       1: [
         { id: 1, sender: "Dr. Sarah Johnson", content: "Hi! I've reviewed your latest assignment submission.", time: "10:15 AM", isOwn: false },
         { id: 2, sender: "You", content: "Thank you for taking the time to review it!", time: "10:20 AM", isOwn: true },

@@ -12,29 +12,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 const Timetable = () => {
-  const [selectedCourse, setSelectedCourse] = useState<{
-    course: string;
-    room: string;
-    time: string;
-    day: string;
-  } | null>(null);
+  const [selectedCourse, setSelectedCourse] = useState(null);
 
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const timeSlots = [
-    "08:00",
-    "09:00",
-    "10:00",
-    "11:00",
-    "12:00",
-    "13:00",
-    "14:00",
-    "15:00",
-    "16:00",
-    "17:00",
+    "08:00", "09:00", "10:00", "11:00", "12:00",
+    "13:00", "14:00", "15:00", "16:00", "17:00",
   ];
   
-  // Schedule organized by day and time slot
-  const schedule: Record<string, Record<string, { course: string; room: string; duration: number } | null>> = {
+  const schedule = {
     Monday: {
       "09:00": { course: "Advanced JavaScript", room: "Room 301", duration: 2 },
       "11:00": { course: "Network Security Fundamentals", room: "Lab 202", duration: 2 },
@@ -59,8 +45,8 @@ const Timetable = () => {
     },
   };
 
-  const getCellClass = (course: string) => {
-    const colorMap: Record<string, string> = {
+  const getCellClass = (course) => {
+    const colorMap = {
       "Advanced JavaScript": "from-primary/20 to-primary/30 border-primary/40",
       "Web Development Fundamentals": "from-primary/20 to-primary/30 border-primary/40",
       "Network Security Fundamentals": "from-blue-500/20 to-blue-600/20 border-blue-500/30",
@@ -71,8 +57,8 @@ const Timetable = () => {
     return colorMap[course] || "from-gray-500/20 to-gray-600/20 border-gray-500/30";
   };
 
-  const getCourseDetails = (courseName: string) => {
-    const details: Record<string, any> = {
+  const getCourseDetails = (courseName) => {
+    const details = {
       "Advanced JavaScript": {
         code: "CS301",
         instructor: "Dr. Sarah Johnson",
@@ -223,7 +209,6 @@ const Timetable = () => {
 
             {selectedCourse && (
               <div className="space-y-6">
-                {/* Schedule Info */}
                 <div className="flex flex-wrap gap-3">
                   <Badge variant="secondary" className="flex items-center gap-2 px-3 py-1.5">
                     <CalendarDays className="h-4 w-4" />
@@ -239,7 +224,6 @@ const Timetable = () => {
                   </Badge>
                 </div>
 
-                {/* Course Details */}
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
                     <User className="h-5 w-5 text-primary" />
@@ -267,7 +251,7 @@ const Timetable = () => {
                   <div className="p-4 rounded-lg bg-muted/50">
                     <h4 className="font-semibold mb-3">Topics Covered</h4>
                     <div className="flex flex-wrap gap-2">
-                      {getCourseDetails(selectedCourse.course).topics.map((topic: string, index: number) => (
+                      {getCourseDetails(selectedCourse.course).topics.map((topic, index) => (
                         <Badge key={index} variant="outline" className="bg-background">
                           {topic}
                         </Badge>
