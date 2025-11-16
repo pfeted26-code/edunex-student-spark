@@ -1,18 +1,18 @@
+import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { MapPin, Clock, User, BookOpen, CalendarDays, X } from "lucide-react";
-import { useState } from "react";
+import { MapPin, Clock, User, BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 
 const Timetable = () => {
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [currentWeek, setCurrentWeek] = useState(0);
 
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const timeSlots = [
@@ -22,256 +22,306 @@ const Timetable = () => {
   
   const schedule = {
     Monday: {
-      "09:00": { course: "Advanced JavaScript", room: "Room 301", duration: 2 },
-      "11:00": { course: "Network Security Fundamentals", room: "Lab 202", duration: 2 },
-      "14:00": { course: "Machine Learning Basics", room: "Room 405", duration: 2 },
+      "09:00": { 
+        course: "Advanced JavaScript", 
+        room: "Room 301", 
+        duration: 2,
+        instructor: "Dr. Sarah Johnson",
+        type: "Lecture"
+      },
+      "11:00": { 
+        course: "Network Security Fundamentals", 
+        room: "Lab 202", 
+        duration: 2,
+        instructor: "Dr. James Wilson",
+        type: "Lab"
+      },
+      "14:00": { 
+        course: "Machine Learning Basics", 
+        room: "Room 405", 
+        duration: 2,
+        instructor: "Dr. Robert Taylor",
+        type: "Lecture"
+      },
     },
     Tuesday: {
-      "10:00": { course: "Web Development Fundamentals", room: "Room 210", duration: 2 },
-      "13:00": { course: "Cryptography & Encryption", room: "Room 115", duration: 2 },
+      "10:00": { 
+        course: "Web Development Fundamentals", 
+        room: "Room 210", 
+        duration: 2,
+        instructor: "Prof. Michael Chen",
+        type: "Lecture"
+      },
+      "13:00": { 
+        course: "Cryptography & Encryption", 
+        room: "Room 115", 
+        duration: 2,
+        instructor: "Dr. Amanda Lee",
+        type: "Lecture"
+      },
     },
     Wednesday: {
-      "09:00": { course: "Advanced JavaScript", room: "Room 301", duration: 2 },
-      "11:00": { course: "Data Analytics with Python", room: "Lab 202", duration: 2 },
-      "14:00": { course: "Machine Learning Basics", room: "Room 405", duration: 2 },
+      "09:00": { 
+        course: "Advanced JavaScript", 
+        room: "Room 301", 
+        duration: 2,
+        instructor: "Dr. Sarah Johnson",
+        type: "Lecture"
+      },
+      "11:00": { 
+        course: "Data Analytics with Python", 
+        room: "Lab 202", 
+        duration: 2,
+        instructor: "Prof. Lisa Anderson",
+        type: "Lab"
+      },
+      "14:00": { 
+        course: "Machine Learning Basics", 
+        room: "Room 405", 
+        duration: 2,
+        instructor: "Dr. Robert Taylor",
+        type: "Lecture"
+      },
     },
     Thursday: {
-      "10:00": { course: "Web Development Fundamentals", room: "Room 210", duration: 2 },
-      "13:00": { course: "Network Security Fundamentals", room: "Room 115", duration: 2 },
+      "10:00": { 
+        course: "Web Development Fundamentals", 
+        room: "Room 210", 
+        duration: 2,
+        instructor: "Prof. Michael Chen",
+        type: "Lecture"
+      },
+      "13:00": { 
+        course: "Network Security Fundamentals", 
+        room: "Room 115", 
+        duration: 2,
+        instructor: "Dr. James Wilson",
+        type: "Lecture"
+      },
     },
     Friday: {
-      "09:00": { course: "Advanced JavaScript", room: "Room 301", duration: 2 },
-      "11:00": { course: "Cryptography & Encryption", room: "Lab 202", duration: 2 },
+      "09:00": { 
+        course: "Advanced JavaScript", 
+        room: "Room 301", 
+        duration: 2,
+        instructor: "Dr. Sarah Johnson",
+        type: "Tutorial"
+      },
+      "11:00": { 
+        course: "Cryptography & Encryption", 
+        room: "Lab 202", 
+        duration: 2,
+        instructor: "Dr. Amanda Lee",
+        type: "Lab"
+      },
     },
   };
 
   const getCellClass = (course) => {
     const colorMap = {
-      "Advanced JavaScript": "from-primary/20 to-primary/30 border-primary/40",
-      "Web Development Fundamentals": "from-primary/20 to-primary/30 border-primary/40",
-      "Network Security Fundamentals": "from-blue-500/20 to-blue-600/20 border-blue-500/30",
-      "Cryptography & Encryption": "from-blue-500/20 to-blue-600/20 border-blue-500/30",
-      "Machine Learning Basics": "from-pink-500/20 to-pink-600/20 border-pink-500/30",
-      "Data Analytics with Python": "from-pink-500/20 to-pink-600/20 border-pink-500/30",
+      "Advanced JavaScript": "from-primary/90 to-primary-light/90 border-primary",
+      "Web Development Fundamentals": "from-primary/80 to-secondary/80 border-primary",
+      "Network Security Fundamentals": "from-secondary/90 to-accent/90 border-secondary",
+      "Cryptography & Encryption": "from-secondary/80 to-primary/80 border-secondary",
+      "Machine Learning Basics": "from-accent/90 to-secondary/90 border-accent",
+      "Data Analytics with Python": "from-accent/80 to-primary/80 border-accent",
     };
-    return colorMap[course] || "from-gray-500/20 to-gray-600/20 border-gray-500/30";
+    return colorMap[course] || "from-muted/80 to-muted/90 border-border";
   };
 
-  const getCourseDetails = (courseName) => {
-    const details = {
-      "Advanced JavaScript": {
-        code: "CS301",
-        instructor: "Dr. Sarah Johnson",
-        credits: 3,
-        description: "Master advanced JavaScript concepts including ES6+, async programming, and modern frameworks for building dynamic web applications.",
-        semester: "Fall 2024",
-        topics: ["ES6+ Features", "Async/Await", "Closures", "Promises", "Modern Frameworks"],
-      },
-      "Web Development Fundamentals": {
-        code: "CS101",
-        instructor: "Prof. Michael Chen",
-        credits: 4,
-        description: "Introduction to web development covering HTML, CSS, JavaScript, and responsive design principles.",
-        semester: "Fall 2024",
-        topics: ["HTML5", "CSS3", "JavaScript Basics", "Responsive Design", "Web APIs"],
-      },
-      "Network Security Fundamentals": {
-        code: "SEC201",
-        instructor: "Dr. Emily Rodriguez",
-        credits: 3,
-        description: "Core principles of network security including firewalls, VPNs, intrusion detection, and security protocols.",
-        semester: "Fall 2024",
-        topics: ["Firewalls", "VPN Configuration", "IDS/IPS", "Network Protocols", "Security Best Practices"],
-      },
-      "Cryptography & Encryption": {
-        code: "SEC202",
-        instructor: "Prof. David Kim",
-        credits: 4,
-        description: "Study of cryptographic algorithms, encryption techniques, and their applications in securing digital communications.",
-        semester: "Fall 2024",
-        topics: ["Symmetric Encryption", "Public Key Cryptography", "Digital Signatures", "Hash Functions", "SSL/TLS"],
-      },
-      "Machine Learning Basics": {
-        code: "DS301",
-        instructor: "Dr. Amanda Williams",
-        credits: 3,
-        description: "Introduction to machine learning algorithms, supervised and unsupervised learning, and practical ML applications.",
-        semester: "Fall 2024",
-        topics: ["Supervised Learning", "Neural Networks", "Classification", "Regression", "Model Evaluation"],
-      },
-      "Data Analytics with Python": {
-        code: "DS201",
-        instructor: "Prof. Robert Lee",
-        credits: 4,
-        description: "Learn data analysis using Python, pandas, NumPy, and visualization libraries for extracting insights from data.",
-        semester: "Fall 2024",
-        topics: ["Pandas", "NumPy", "Data Visualization", "Statistical Analysis", "Data Cleaning"],
-      },
-    };
-    return details[courseName] || {
-      code: "TBA",
-      instructor: "TBA",
-      credits: 3,
-      description: "Course details coming soon.",
-      semester: "Fall 2024",
-      topics: [],
-    };
+  const getTodayIndex = () => {
+    const today = new Date().getDay();
+    return today === 0 ? -1 : today - 1;
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/5">
+      <div className="container mx-auto p-6 md:p-8">
+        {/* Header */}
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            My Timetable
+          <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            Weekly Timetable
           </h1>
           <p className="text-muted-foreground text-lg">
-            Your weekly class schedule
+            Your class schedule for this week
           </p>
         </div>
 
-        <Card className="overflow-hidden animate-fade-in-up border-none shadow-xl">
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-gradient-to-r from-primary/10 to-secondary/10">
-                  <th className="sticky left-0 z-10 bg-gradient-to-r from-primary/10 to-secondary/10 p-4 text-left font-bold border-b border-r border-border">
-                    Time
-                  </th>
-                  {days.map((day) => (
-                    <th 
-                      key={day}
-                      className="p-4 text-center font-bold border-b border-border min-w-[180px]"
-                    >
-                      <div className="flex flex-col items-center gap-1">
-                        <span className="text-sm font-semibold">{day}</span>
-                      </div>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {timeSlots.map((time, timeIndex) => (
-                  <tr 
-                    key={time}
-                    className="hover:bg-muted/30 transition-colors"
-                  >
-                    <td className="sticky left-0 z-10 bg-background p-4 border-r border-b border-border font-semibold text-sm text-muted-foreground whitespace-nowrap">
-                      {time}
-                    </td>
-                    {days.map((day) => {
-                      const classData = schedule[day]?.[time];
-                      return (
-                        <td 
-                          key={`${day}-${time}`}
-                          className="border-b border-border p-2 align-top"
-                        >
-                          {classData && (
-                            <div 
-                              onClick={() => setSelectedCourse({
-                                course: classData.course,
-                                room: classData.room,
-                                time: time,
-                                day: day
-                              })}
-                              className={`h-full p-3 rounded-lg bg-gradient-to-br ${getCellClass(classData.course)} border-2 hover:shadow-md transition-all duration-200 hover:scale-[1.02] cursor-pointer`}
-                              style={{ minHeight: `${classData.duration * 60}px` }}
-                            >
-                              <div className="font-semibold text-sm mb-1 leading-tight">
-                                {classData.course}
-                              </div>
-                              <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                                <MapPin className="h-3 w-3 flex-shrink-0" />
-                                <span>{classData.room}</span>
-                              </div>
-                            </div>
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {/* Week Navigation */}
+        <Card className="p-4 mb-6 border-none animate-fade-in-up">
+          <div className="flex items-center justify-between">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentWeek(currentWeek - 1)}
+              className="gap-2"
+            >
+              <ChevronLeft className="h-4 w-4" />
+              Previous Week
+            </Button>
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Current Week</p>
+              <p className="font-semibold">Fall 2025 - Week {Math.abs(currentWeek) + 1}</p>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentWeek(currentWeek + 1)}
+              className="gap-2"
+            >
+              Next Week
+              <ChevronRight className="h-4 w-4" />
+            </Button>
           </div>
         </Card>
 
+        {/* Schedule Grid */}
+        <div className="overflow-x-auto animate-scale-in">
+          <div className="min-w-[800px] space-y-4">
+            {/* Days Header */}
+            <div className="grid grid-cols-6 gap-4">
+              <div className="font-semibold text-sm text-muted-foreground">Time</div>
+              {days.map((day, index) => (
+                <div 
+                  key={day} 
+                  className={`text-center ${getTodayIndex() === index ? 'text-primary font-bold' : 'font-semibold'}`}
+                >
+                  <div className="text-sm mb-1">{day}</div>
+                  {getTodayIndex() === index && (
+                    <Badge className="bg-primary text-white text-xs">Today</Badge>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Time Slots */}
+            {timeSlots.map((time) => (
+              <div key={time} className="grid grid-cols-6 gap-4 items-start">
+                <div className="font-medium text-sm text-muted-foreground pt-2">
+                  {time}
+                </div>
+                {days.map((day) => {
+                  const courseData = schedule[day]?.[time];
+                  if (courseData) {
+                    return (
+                      <Card
+                        key={`${day}-${time}`}
+                        style={{ gridRow: `span ${courseData.duration}` }}
+                        onClick={() => setSelectedCourse({ ...courseData, day, time })}
+                        className={`group p-4 cursor-pointer hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 overflow-hidden relative animate-fade-in`}
+                      >
+                        <div className={`absolute inset-0 bg-gradient-to-br ${getCellClass(courseData.course)} opacity-90 group-hover:opacity-100 transition-opacity`} />
+                        
+                        <div className="relative z-10 text-white">
+                          <div className="flex items-start justify-between mb-2">
+                            <BookOpen className="h-5 w-5 flex-shrink-0" />
+                            <Badge className="bg-white/20 text-white text-xs backdrop-blur-sm">
+                              {courseData.type}
+                            </Badge>
+                          </div>
+                          <h4 className="font-bold mb-2 text-sm leading-tight">
+                            {courseData.course}
+                          </h4>
+                          <div className="space-y-1 text-xs opacity-90">
+                            <div className="flex items-center gap-1">
+                              <MapPin className="h-3 w-3" />
+                              <span>{courseData.room}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              <span>{courseData.duration}h</span>
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    );
+                  }
+                  return <div key={`${day}-${time}`} />;
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Course Details Dialog */}
         <Dialog open={!!selectedCourse} onOpenChange={() => setSelectedCourse(null)}>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 {selectedCourse?.course}
               </DialogTitle>
-              <DialogDescription>
-                Complete course information and details
-              </DialogDescription>
             </DialogHeader>
 
             {selectedCourse && (
-              <div className="space-y-6">
-                <div className="flex flex-wrap gap-3">
-                  <Badge variant="secondary" className="flex items-center gap-2 px-3 py-1.5">
-                    <CalendarDays className="h-4 w-4" />
-                    {selectedCourse.day}
-                  </Badge>
-                  <Badge variant="secondary" className="flex items-center gap-2 px-3 py-1.5">
-                    <Clock className="h-4 w-4" />
-                    {selectedCourse.time}
-                  </Badge>
-                  <Badge variant="secondary" className="flex items-center gap-2 px-3 py-1.5">
-                    <MapPin className="h-4 w-4" />
-                    {selectedCourse.room}
-                  </Badge>
+              <div className="space-y-6 mt-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <Card className="p-4 border-none bg-gradient-to-br from-primary/10 to-primary/5">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                        <Clock className="h-5 w-5 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground">Day & Time</p>
+                        <p className="font-semibold">{selectedCourse.day}, {selectedCourse.time}</p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-4 border-none bg-gradient-to-br from-secondary/10 to-secondary/5">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-secondary to-accent flex items-center justify-center">
+                        <Clock className="h-5 w-5 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground">Duration</p>
+                        <p className="font-semibold">{selectedCourse.duration} hours</p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-4 border-none bg-gradient-to-br from-accent/10 to-accent/5">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-accent to-primary flex items-center justify-center">
+                        <MapPin className="h-5 w-5 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground">Location</p>
+                        <p className="font-semibold">{selectedCourse.room}</p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-4 border-none bg-gradient-to-br from-primary/10 to-accent/10">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                        <BookOpen className="h-5 w-5 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground">Type</p>
+                        <p className="font-semibold">{selectedCourse.type}</p>
+                      </div>
+                    </div>
+                  </Card>
                 </div>
 
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
-                    <User className="h-5 w-5 text-primary" />
+                <Card className="p-5 border-none bg-muted/50">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                      <User className="h-6 w-6 text-white" />
+                    </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Instructor</p>
-                      <p className="font-semibold">{getCourseDetails(selectedCourse.course).instructor}</p>
+                      <p className="font-semibold text-lg">{selectedCourse.instructor}</p>
                     </div>
                   </div>
+                </Card>
 
-                  <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
-                    <BookOpen className="h-5 w-5 text-primary" />
-                    <div>
-                      <p className="text-sm text-muted-foreground">Credits</p>
-                      <p className="font-semibold">{getCourseDetails(selectedCourse.course).credits} Credits</p>
-                    </div>
-                  </div>
-
-                  <div className="p-4 rounded-lg bg-muted/50">
-                    <h4 className="font-semibold mb-2">Course Description</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {getCourseDetails(selectedCourse.course).description}
-                    </p>
-                  </div>
-
-                  <div className="p-4 rounded-lg bg-muted/50">
-                    <h4 className="font-semibold mb-3">Topics Covered</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {getCourseDetails(selectedCourse.course).topics.map((topic, index) => (
-                        <Badge key={index} variant="outline" className="bg-background">
-                          {topic}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="p-4 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20">
-                    <p className="text-sm">
-                      <span className="font-semibold">Semester:</span> {getCourseDetails(selectedCourse.course).semester}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <Button className="flex-1" variant="default">
-                    View Course Materials
+                <div className="flex gap-3 pt-4">
+                  <Button className="flex-1 bg-gradient-to-r from-primary via-secondary to-accent hover:opacity-90">
+                    View Course Details
                   </Button>
-                  <Button className="flex-1" variant="outline">
-                    Contact Instructor
+                  <Button variant="outline" className="flex-1">
+                    Set Reminder
                   </Button>
                 </div>
               </div>
